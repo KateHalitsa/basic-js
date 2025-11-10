@@ -26,7 +26,7 @@ function transform (arr) {
     switch (current) {
       case '--discard-next':
         if (i + 1 < arr.length) {
-          skipIndex.add(i + 1); // пазначаем, што наступны трэба прапусціць
+          skipIndex.add(i + 1);
         }
         break;
 

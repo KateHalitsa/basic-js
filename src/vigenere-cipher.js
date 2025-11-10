@@ -20,14 +20,63 @@ const { NotImplementedError } = require('../lib');
  *
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  constructor(direct = true) {
+    this.direct = direct;
+  }
+  encrypt(message, key) {
+    if (!message || !key) throw new Error('Incorrect arguments!');
+
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    message = message.toUpperCase();
+    key = key.toUpperCase();
+
+    let encrypted = '';
+    let keyIndex = 0;
+
+    for (let i = 0; i < message.length; i++) {
+      const messageChar = message[i];
+      if (alphabet.includes(messageChar)) {
+        const keyChar = key[keyIndex % key.length];
+        const messagePos = alphabet.indexOf(messageChar);
+        const keyPos = alphabet.indexOf(keyChar);
+        const encryptedChar = alphabet[(messagePos + keyPos) % 26];
+        encrypted += encryptedChar;
+
+        keyIndex++;
+      } else {
+        encrypted += messageChar; // Сохраняем символы, не входящие в алфавит
+      }
+    }
+
+    return this.direct ? encrypted : encrypted.split('').reverse().join('');
   }
 
-  decrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  decrypt(encryptedMessage, key) {
+    if (!encryptedMessage || !key) throw new Error('Incorrect arguments!');
+
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    encryptedMessage = encryptedMessage.toUpperCase();
+    key = key.toUpperCase();
+
+    let decrypted = '';
+    let keyIndex = 0;
+
+    for (let i = 0; i < encryptedMessage.length; i++) {
+      const encryptedChar = encryptedMessage[i];
+      if (alphabet.includes(encryptedChar)) {
+        const keyChar = key[keyIndex % key.length];
+        const encryptedPos = alphabet.indexOf(encryptedChar);
+        const keyPos = alphabet.indexOf(keyChar);
+        const decryptedChar = alphabet[(encryptedPos - keyPos + 26) % 26];
+        decrypted += decryptedChar;
+
+        keyIndex++;
+      } else {
+        decrypted += encryptedChar;
+      }
+    }
+
+    return this.direct ? decrypted : decrypted.split('').reverse().join('');
   }
 }
 
