@@ -17,7 +17,7 @@ const { NotImplementedError } = require('../lib');
 function isMAC48Address( n ) {
   const mac48Pattern = /^([0-9A-F]{2}-){5}[0-9A-F]{2}$/;
 
-  return mac48Pattern.test(inputString);
+  return mac48Pattern.test(n);
 }
 
 module.exports = {
