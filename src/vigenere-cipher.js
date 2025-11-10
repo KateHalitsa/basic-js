@@ -44,7 +44,7 @@ class VigenereCipheringMachine {
 
         keyIndex++;
       } else {
-        encrypted += messageChar; // Сохраняем символы, не входящие в алфавит
+        encrypted += messageChar;
       }
     }
 
