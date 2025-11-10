@@ -19,23 +19,44 @@ function transform (arr) {
   }
 
   const result = [];
-
+  const skipIndex = new Set();
   for (let i = 0; i < arr.length; i++) {
     const current = arr[i];
 
-    if (current === '--double-next') {
-      if (i + 1 < arr.length) {
-        result.push(arr[i + 1]); // Добавляем следующий элемент дважды
-        result.push(arr[i + 1]);
-      }
-    } else if (current === '--discard-prev') {
-      if (result.length > 0) {
-        result.pop(); // Удаляем последний добавленный элемент
-      }
-    } else {
-      result.push(current); // Добавляем обычный элемент
+    switch (current) {
+      case '--discard-next':
+        if (i + 1 < arr.length) {
+          skipIndex.add(i + 1); // пазначаем, што наступны трэба прапусціць
+        }
+        break;
+
+      case '--discard-prev':
+        if (result.length > 0 && !skipIndex.has(i - 1)) {
+          result.pop();
+        }
+        break;
+
+      case '--double-next':
+        if (i + 1 < arr.length) {
+          result.push(arr[i + 1]);
+        }
+        break;
+
+      case '--double-prev':
+        if (i > 0 && !skipIndex.has(i - 1)) {
+          result.push(arr[i - 1]);
+        }
+        break;
+
+      default:
+        if (!skipIndex.has(i)) {
+          result.push(current);
+        }
+        break;
     }
+
   }
+  return result;
 }
 
 module.exports = {
